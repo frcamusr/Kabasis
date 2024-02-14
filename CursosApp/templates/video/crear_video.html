@@ -1,0 +1,15 @@
+{% extends "KabasisWebApp/base.html" %}
+
+{% block content %}
+<div class="container mt-5">
+    <div class="bg-white p-4 rounded text-center">
+        <h1 class="mb-4">Crear Nuevo Video</h1>
+
+        <form method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button class="btn btn-primary" type="submit">Subir Video</button>
+        </form>
+    </div>
+</div>
+{% endblock %}

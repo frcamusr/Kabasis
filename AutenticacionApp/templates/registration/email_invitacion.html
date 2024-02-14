@@ -1,0 +1,101 @@
+{% extends "KabasisWebApp/base.html" %}
+
+{% load static %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+
+<link rel="stylesheet" type="text/css" href="{% static 'css/forms.css' %}">
+
+<section class="page-section cta" style="margin-top: 30px; margin-bottom: 30px;">
+    <div class="container">
+        <div class="text-center">
+            <a style="margin-bottom: 10px;" class="btn btn-primary fas fa-arrow-left d-flex float-left"
+                href="{% url 'crear_usuario_personalizado' %}"> &nbsp;&nbsp;Crear Usuario personalizado</a>
+        </div>
+        <br><br>
+        <h1 style="color: white; text-align: center;">Enviar Invitación de Registro</h1>
+        <form method="post">
+            {% csrf_token %}
+
+            {# Campo de correo electrónico #}
+            <div style="color: white;" class="form-group">
+
+                {{ form.email|as_crispy_field }}
+            </div>
+
+            {# Campo de área #}
+            <div style="color: white;" class="form-group">
+
+                {{ form.area|as_crispy_field }}
+            </div>
+
+            {# Campo de mensaje personalizado #}
+            <div style="color: white;" class="form-group">
+
+                {{ form.mensaje_personalizado|as_crispy_field }}
+            </div>
+
+            <input type="hidden" name="area_id" id="area_id">
+            <button style="margin-bottom: 40px;" type="submit" class="btn btn-primary">Enviar Invitación</button>
+
+            <div class="form-group">
+                <label style="color: white;" class="white-label" for="link_registro">Enlace de Registro:</label>
+                <input type="text" id="link_registro" class="form-control" readonly>
+
+                <button type="button" onclick="copiarLink()" class="btn btn-primary mt-3 float-right ">Copiar
+                    Enlace</button>
+                <!-- Contenedor para el mensaje de éxito -->
+                <p id="mensaje_copiado" style="display:none; color: yellow;">Enlace copiado exitosamente.</p>
+            </div>
+        </form>
+
+        <script>
+            document.addEventListener('DOMContentLoaded', function () {
+                const areaSelect = document.querySelector('[name="area"]');
+                const mensajeInput = document.querySelector('[name="mensaje_personalizado"]');
+                const linkRegistroInput = document.getElementById('link_registro');
+                const linkRegistroBase = "{{ link_registro_base }}";
+                const idEmpresaCodificado = "{{ id_empresa_codificado }}";
+                const razonSocial = "{{ razon_social }}"; // Obtener el nombre de la empresa
+
+                // Generar el mensaje predeterminado inicial sin área
+                let linkRegistro = `${linkRegistroBase}?empresa_id=${idEmpresaCodificado}`;
+                linkRegistroInput.value = linkRegistro;
+                const mensajePredeterminadoInicial = `Nos complace extenderte una invitación exclusiva para formar parte de nuestra comunidad en Kabasis,\n\nEsta plataforma ha sido cuidadosamente seleccionada para enriquecer nuestro entorno de aprendizaje y desarrollo profesional. En Kabasis, descubrirás una amplia gama de materiales dedicados a la seguridad digital, todos diseñados para complementar y potenciar tus habilidades y conocimientos en este campo vital.\n\nPara comenzar tu viaje en Kabasis, por favor regístrate usando el siguiente enlace personalizado: ${linkRegistro}. La inscripción es sencilla y te brindará acceso inmediato a todos los recursos disponibles.\n\nEstamos entusiasmados por ver el impacto positivo que Kabasis tendrá en tu desarrollo profesional.\n\nAtentamente: \n\n${razonSocial}.`;
+                mensajeInput.value = mensajePredeterminadoInicial;
+
+                // Actualizar el mensaje y el enlace cuando se selecciona una área
+                areaSelect.addEventListener('change', function () {
+                    const areaId = this.value || '';
+                    const areaIdCodificado = areaId ? btoa(areaId) : '';
+                    const areaNombre = areaSelect.options[areaSelect.selectedIndex].text;
+                    document.getElementById('area_id').value = areaIdCodificado;
+                    linkRegistro = `${linkRegistroBase}?empresa_id=${idEmpresaCodificado}&area_id=${areaIdCodificado}`;
+                    linkRegistroInput.value = linkRegistro;
+
+                    // Actualizar el mensaje con el nombre del área si se selecciona una
+                    const mensajePredeterminado = areaId ? `Nos complace extenderte una invitación exclusiva para formar parte de nuestra comunidad en Kabasis, específicamente en el área de ${areaNombre} de ${razonSocial}.\n\nEsta plataforma ha sido cuidadosamente seleccionada para enriquecer nuestro entorno de aprendizaje y desarrollo profesional. En Kabasis, descubrirás una amplia gama de materiales dedicados a la seguridad digital, todos diseñados para complementar y potenciar tus habilidades y conocimientos en este campo vital.\n\nPara comenzar tu viaje en Kabasis, por favor regístrate usando el siguiente enlace personalizado: ${linkRegistro}. La inscripción es sencilla y te brindará acceso inmediato a todos los recursos disponibles.\n\nEstamos entusiasmados por ver el impacto positivo que Kabasis tendrá en tu desarrollo profesional y en el fortalecimiento de nuestro equipo en el área de ${areaNombre}. \n\nAtentamente: \n\n${razonSocial}.` : mensajePredeterminadoInicial;
+                    mensajeInput.value = mensajePredeterminado;
+                });
+            });
+
+            function copiarLink() {
+                const linkRegistroInput = document.getElementById('link_registro');
+                linkRegistroInput.select();
+                document.execCommand('copy');
+
+                // Mostrar mensaje
+                const mensajeCopiado = document.getElementById('mensaje_copiado');
+                mensajeCopiado.style.display = 'block';
+
+                // Opcional: Ocultar mensaje después de unos segundos
+                setTimeout(function () {
+                    mensajeCopiado.style.display = 'none';
+                }, 5000);  // 5000 milisegundos = 5 segundos
+            }
+        </script>
+    </div>
+</section>
+
+{% endblock %}

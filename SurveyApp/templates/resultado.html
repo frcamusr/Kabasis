@@ -1,0 +1,29 @@
+{% extends 'KabasisWebApp/base.html' %}
+
+{% block content %}
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card shadow-lg p-4">
+                <h2 class="text-center mb-4">Resultado del cuestionario</h2>
+                {% if session_exists %}
+                    <p class="text-center">No se puede volver a la página del formulario.</p>
+                {% else %}
+                    <!-- Mostrar el contenido normal de la página de resultado -->
+                    <p class="text-center">¡Has completado el cuestionario!</p>
+                    <p class="text-center">Respuestas correctas: {{ porcentaje }}%</p>
+                    <div class="progress">
+                        <div class="progress-bar progress-bar-success progress-bar-striped" style="width: {{ porcentaje }}%">
+                        </div>
+                    </div>
+                    <!-- Agregar el botón "Ir al curso" -->
+                    <div class="text-center mt-4">
+                        <h5> !Felicidades! se le han asignado las siguientes unidades </h5>
+                        <a href="{% url 'ver_curso' id=1 %}" class="btn btn-primary">Ir al Curso</a>
+                    </div>                
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

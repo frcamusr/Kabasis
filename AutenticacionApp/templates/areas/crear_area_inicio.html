@@ -1,0 +1,93 @@
+{% extends "KabasisWebApp/base1.html"%}
+
+{% load static %}
+
+{% block content%}
+
+<section class="page-section cta" style="margin-top: 30px; margin-bottom: 30px;">
+
+    <div class="row">
+
+        <div class="col-12 col-md-6 offset-md-3">
+
+            <div class="card">
+
+                <div class="card-body">
+
+                    <div class="text-center">
+                        <a class="btn btn-primary fas fa-arrow-left d-flex float-left"
+                            href="{% url 'lista_areas' %}">&nbsp;Atrás</a>
+                    </div>
+
+                    <h2 class="text-center" style="margin-right: 90px">Crear área</h2>
+                    <p style="text-align: center;">Agrega las áreas de tu empresa separadas por coma, si no hay áreas en
+                        tu empresa omite este paso, se utilizarán estas áreas para realizar mediciones de progreso</p>
+
+                    <form action="" method="post" class="my-3" enctype="multipart/form-data">
+                        <!-- Agregar una clase 'my-3' para ajustar el margen vertical -->
+                        {% csrf_token %}
+                        {{ form }}
+                        <div class="d-flex justify-content-center my-3">
+                            <!-- Agregar una clase 'my-3' para ajustar el margen vertical -->
+                            <input type="reset" value="Limpiar" class="btn btn-secondary mx-2">
+                            <input type="submit" value="Guardar" class="btn btn-primary mx-2">
+                            <a class="btn btn-primary skip-step" href="{% url 'Home' %}">Omitir este paso &nbsp; <i
+                                    class="fas fa-arrow-right"></i></a>
+
+                        </div>
+                    </form>
+                    {{mensaje}}
+
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+</section>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        // Manejo de mensajes de error
+        {% if errores %}
+            {% for mensaje in errores %}
+                Swal.fire({
+                    title: 'Advertencia',
+                    text: '{{ mensaje|escapejs }}',
+                    icon: 'warning',
+                    confirmButtonColor: '#3085d6',
+                    confirmButtonText: 'Ok'
+                });
+            {% endfor %}
+        {% endif %}
+
+        // Controlador para el botón 'skip-step'
+        var skipButton = document.querySelector('.skip-step');
+        if (skipButton) {
+            skipButton.addEventListener('click', function (e) {
+                e.preventDefault();
+                var url = this.getAttribute('href');
+                Swal.fire({
+                    title: '¿Estás seguro?',
+                    text: "¿Realmente deseas omitir este paso? Desde el menú de administración también podrás agregar áreas",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Sí, omitir',
+                    cancelButtonText: 'No, cancelar'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        window.location.href = url;
+                    }
+                });
+            });
+        } else {
+            console.error('Botón skip-step no encontrado');
+        }
+    });
+</script>
+
+
+{% endblock %}
