@@ -86,7 +86,7 @@ ROOT_URLCONF = 'kabasisWeb.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [os.path.join(BASE_DIR, 'reactapp/build')],  # Ruta a la carpeta que contiene las plantillas
+        'DIRS': [os.path.join(BASE_DIR, 'AutenticacionApp', 'templates')],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [

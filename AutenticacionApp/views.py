@@ -961,46 +961,8 @@ def set_default_tipo_usuario(sender, instance, **kwargs):
         instance.tipo_usuario = 'Administrador Kabasis'
 
 
+##Reestablecer la contraseña
 
 
-
-##reestablecer contraseña
-from django.shortcuts import render, redirect
-from django.core.mail import send_mail
-from django.urls import reverse
-from django.conf import settings
-from .models import CustomUser, VerificationToken
-from django.template.loader import render_to_string
-from django.utils.http import urlsafe_base64_encode
-from django.utils.encoding import force_bytes
-from django.contrib.sites.shortcuts import get_current_site
-
-def password_reset_request(request):
-    if request.method == "POST":
-        email = request.POST.get('email')
-        user = CustomUser.objects.filter(email=email).first()
-        if user:
-            # Crear un token de verificación para el usuario
-            token = VerificationToken.objects.create(user=user)
-            current_site = get_current_site(request)
-            mail_subject = 'Restablecer tu contraseña en KabasisWeb'
-            message = render_to_string('reset_password_email.html', {
-                'user': user,
-                'domain': current_site.domain,
-                'uid': urlsafe_base64_encode(force_bytes(user.pk)),
-                'token': token.token,
-            })
-            # Utilizar la configuración de correo electrónico de settings.py
-            send_mail(
-                mail_subject, 
-                message, 
-                settings.EMAIL_HOST_USER, 
-                [email],
-                fail_silently=False,
-            )
-            # Redirigir al usuario a una página de confirmación de envío de correo electrónico
-            return redirect('email_sent_page') # Asegúrate de tener esta vista y URL configuradas
-    # Renderizar el formulario de solicitud de restablecimiento de contraseña
-    return render(request, 'password_reset_request.html')
 
 

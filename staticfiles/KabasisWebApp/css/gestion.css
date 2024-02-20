@@ -1,5 +1,5 @@
 body {
-  font-family: 'Lora';
+  font-family: 'Arial';
   background: linear-gradient(rgba(46, 34, 30, 0.65), rgba(12, 7, 5, 0.65)), url("../img/Cursos.png");
   background-attachment: fixed;
   background-position: center;
@@ -81,7 +81,8 @@ p {
 #mainNav {
   background-image: linear-gradient(to top, rgba(150, 0, 0, 0.6), #123989, #296FFA, rgba(150, 0, 0, 0.6));
   /* Fondo degradado */
-  font-family: 'Raleway';
+  font-family: 'Arial';
+  font-size: 10px;
 }
 
 #mainNav .navbar-brand {

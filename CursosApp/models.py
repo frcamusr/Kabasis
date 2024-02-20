@@ -130,6 +130,9 @@ class QuizProgreso(models.Model):
 
     def __str__(self):
         return f"{self.progreso.user.username} - {self.quiz.titulo} - {'Aprobado' if self.aprobado else 'No Aprobado'}"
+    
+
+
 
 
 

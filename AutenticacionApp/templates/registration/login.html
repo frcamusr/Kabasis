@@ -4,11 +4,6 @@
 {% load crispy_forms_tags %}
 
 {% block content %}
-<!DOCTYPE html>
-<html lang="en">
-<head>
-</head>
-<body>
 
     <section class="page-section cta" style="margin-top: 30px; margin-bottom: 30px;">
         <div class="container">
@@ -19,8 +14,7 @@
                             <div class="form-group">
                                 <img src="{% static 'KabasisWebApp/img/logo_original.png' %}"
                                     alt="Descripción de la imagen" style="width: 200px; height: 150px;">
-                                <p style="color: #E5929E; font-weight: 600; font-size: 20px;">Construyendo human firewal
-                                    en tu organizacion</p>
+                                <p style="color: #E5929E; font-weight: 600; font-size: 20px;">Construyendo human firewall en tu organización</p>
                             </div>
                             <hr>
                             <form action="" method="post">
@@ -33,18 +27,16 @@
                                     {% endfor %}
                                 </ul>
                                 {% endif %}
-                                
+                                <div>
+                                    <a href="{% url 'password_reset' %}" class="btn btn-link" style="margin-bottom: 40px;">Olvidé mi contraseña</a>
+                                </div>
                                 <input type="submit" value="Ingresar" class="btn btn-success float-right">
                             </form>
-                            
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-
     </section>
-</body>
-</html>
 
 {% endblock %}
